@@ -4,8 +4,8 @@
   "description": "Проект Mesto фронтенд + бэкенд",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "lint": "npx eslint"
+    "start": "node ./app.js",
+    "dev": "nodemon ./app.js"
   },
   "repository": {
     "type": "git",
