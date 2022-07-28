@@ -1,5 +1,5 @@
 const express = require('express');
-const cardsControllers = require('../controller/cardsControllers');
+const cardsControllers = require('../controllers/cardsControllers');
 
 const cardsRouters = express.Router();
 
