@@ -1,0 +1,70 @@
+@hostname = http://localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@userId = 62e29f5276f0b7d7e14b9c72
+@cardId = 62e2bd68543ef2998910c374
+
+### Get users
+
+GET {{host}}/users
+
+### Get user by Id
+
+GET {{host}}/users/{{userId}}
+
+### Create user
+
+POST {{host}}/users
+Content-Type: application/json
+
+{
+    "name": "Owl",
+    "about": "Night hunter",
+    "avatar": "https://img4.goodfon.com/original/800x480/1/43/sova-kliuv-glaza-peria.jpg"
+}
+
+### Cet cards
+
+GET {{host}}/cards
+
+### Create card
+
+POST {{host}}/cards/
+Content-Type: application/json
+
+{
+    "name": "Lynx",
+    "link": "https://poster.nicefon.ru/2016_06/29/1080x610/711154e6e62533a7972d2.jpg",
+    "owner": "{{userId}}"
+}
+
+### Delete card
+
+DELETE {{host}}/cards/{{cardId}}
+
+### Update user
+
+PATCH {{host}}/users/me
+Content-Type: application/json
+
+{
+    "name": "Lynx",
+    "about": "Hungry cat"
+}
+
+### Update avatar
+
+PATCH {{host}}/users/me/avatar
+Content-Type: application/json
+
+{
+    "avatar": "https://artwalls.com.ua/image/catalog/animals/an-53_o.jpg"
+}
+
+### Put Like card
+
+PUT {{host}}/cards/{{cardId}}/likes
+
+### Remove like card
+
+DELETE {{host}}/cards/{{cardId}}/likes
