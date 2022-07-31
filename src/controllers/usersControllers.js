@@ -46,13 +46,9 @@ exports.updateUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { name, about },
-      { new: true },
+      { new: true, runValidators: true },
     );
     if (user) {
-      const validation = user.validateSync();
-      if (validation !== undefined) {
-        return res.status(INCORRECT_DATA).send({ message: validation.message });
-      }
       return res.send(user);
     }
     return res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
@@ -70,7 +66,7 @@ exports.updateAvatar = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { avatar },
-      { new: true },
+      { new: true, runValidators: true },
     );
     if (user) {
       return res.send(user);

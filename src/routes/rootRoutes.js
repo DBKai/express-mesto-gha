@@ -3,7 +3,7 @@ const rootControllers = require('../controllers/rootControllers');
 
 const rootRouters = express.Router();
 
-rootRouters.patch('*', rootControllers.pathWrongPath);
+rootRouters.use('*', rootControllers.useWrongPath);
 
 module.exports = {
   rootRouters,

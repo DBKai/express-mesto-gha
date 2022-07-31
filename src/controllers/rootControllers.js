@@ -1,9 +1,5 @@
-const { NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
+const { NOT_FOUND } = require('../utils/statusCode');
 
-exports.pathWrongPath = async (req, res) => {
-  try {
-    res.status(NOT_FOUND).send({ message: 'Запрашиваемый ресурс не найден' });
-  } catch (err) {
-    res.status(SERVER_ERROR).send({ message: err.message });
-  }
+exports.useWrongPath = async (req, res) => {
+  res.status(NOT_FOUND).send({ message: 'Запрашиваемый ресурс не найден' });
 };
