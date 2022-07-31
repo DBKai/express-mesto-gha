@@ -17,9 +17,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', rootRouters);
 app.use('/users', userRouters);
 app.use('/cards', cardsRouters);
+app.use('/', rootRouters);
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/mestodb', {
