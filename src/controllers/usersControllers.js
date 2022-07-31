@@ -1,4 +1,5 @@
 const { User } = require('../models/userModels');
+const { INCORRECT_DATA, NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
 
 exports.getUsers = async (req, res) => {
   try {
@@ -6,7 +7,7 @@ exports.getUsers = async (req, res) => {
 
     res.send(users);
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -16,10 +17,10 @@ exports.getUserById = async (req, res) => {
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден.' });
+      res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
     }
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -31,9 +32,9 @@ exports.createUser = async (req, res) => {
     res.send(user);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные при создании пользователя.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -48,13 +49,13 @@ exports.updateUser = async (req, res) => {
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: 'Пользователь с указанным _id не найден.' });
+      res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -69,12 +70,12 @@ exports.updateAvatar = async (req, res) => {
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: 'Пользователь с указанным _id не найден.' });
+      res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };

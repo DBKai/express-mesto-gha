@@ -1,4 +1,5 @@
 const Card = require('../models/cardModels');
+const { INCORRECT_DATA, NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
 
 exports.getCards = async (req, res) => {
   try {
@@ -6,7 +7,7 @@ exports.getCards = async (req, res) => {
 
     res.send(cards);
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -19,9 +20,9 @@ exports.createCard = async (req, res) => {
     res.send(card);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные при создании карточки.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -31,10 +32,10 @@ exports.deleteCard = async (req, res) => {
     if (card.deletedCount > 0) {
       res.send(card);
     } else {
-      res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
+      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена.' });
     }
   } catch (err) {
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -48,13 +49,13 @@ exports.likeCard = async (req, res) => {
     if (card) {
       res.send(card);
     } else {
-      res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+      res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки лайка.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для постановки лайка.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -68,12 +69,12 @@ exports.dislikeCard = async (req, res) => {
     if (card) {
       res.send(card);
     } else {
-      res.status(404).send({ message: 'Передан несуществующий _id карточки.' });
+      res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).send({ message: 'Переданы некорректные данные для снятии лайка.' });
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для снятии лайка.' });
     }
-    res.status(500).send({ message: err.message });
+    res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
