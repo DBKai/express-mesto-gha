@@ -35,6 +35,9 @@ exports.deleteCard = async (req, res) => {
       res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена.' });
     }
   } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для удаления карточки.' });
+    }
     res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
@@ -52,7 +55,7 @@ exports.likeCard = async (req, res) => {
       res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
     }
   } catch (err) {
-    if (err.name === 'ValidationError') {
+    if (err.name === 'CastError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для постановки лайка.' });
     }
     res.status(SERVER_ERROR).send({ message: err.message });
@@ -72,7 +75,7 @@ exports.dislikeCard = async (req, res) => {
       res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
     }
   } catch (err) {
-    if (err.name === 'ValidationError') {
+    if (err.name === 'CastError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для снятии лайка.' });
     }
     res.status(SERVER_ERROR).send({ message: err.message });
