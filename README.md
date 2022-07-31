@@ -3,11 +3,12 @@
 
 Проектная работа в рамках курса "Веб-разработчик" от :man_student: Яндекс.Практикум.
 ## Описание проекта
-
-
-
+Серверная разработка на Node.js с применением баз данных Mongo DB, object data modelling Mongoose
 ## Технологии
 - Express.js
+- Mongo DB
+- Mongoose
+- Автотесты Github
 ## Запуск проекта
 
 `npm run start` — запускает сервер   
