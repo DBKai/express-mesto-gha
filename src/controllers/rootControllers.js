@@ -1,6 +1,6 @@
 const { NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
 
-exports.getRoot = async (req, res) => {
+exports.pathWrongPath = async (req, res) => {
   try {
     res.status(NOT_FOUND).send({ message: 'Запрашиваемый ресурс не найден' });
   } catch (err) {
