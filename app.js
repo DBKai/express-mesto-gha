@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { userRouters } = require('./src/routes/usersRoutes');
 const { cardsRouters } = require('./src/routes/cardsRoutes');
+const { rootRouters } = require('./src/routes/rootRoutes');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/', rootRouters);
 app.use('/users', userRouters);
 app.use('/cards', cardsRouters);
 
