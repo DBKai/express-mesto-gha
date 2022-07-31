@@ -17,12 +17,12 @@ exports.createCard = async (req, res) => {
     const { name, link } = req.body;
     const card = await Card.create({ name, link, owner });
 
-    res.send(card);
+    return res.send(card);
   } catch (err) {
     if (err.name === 'ValidationError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные при создании карточки.' });
     }
-    res.status(SERVER_ERROR).send({ message: err.message });
+    return res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -30,15 +30,14 @@ exports.deleteCard = async (req, res) => {
   try {
     const card = await Card.deleteOne({ _id: req.params.cardId });
     if (card.deletedCount > 0) {
-      res.send(card);
-    } else {
-      res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена.' });
+      return res.send(card);
     }
+    return res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена.' });
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для удаления карточки.' });
     }
-    res.status(SERVER_ERROR).send({ message: err.message });
+    return res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -50,15 +49,14 @@ exports.likeCard = async (req, res) => {
       { new: true },
     );
     if (card) {
-      res.send(card);
-    } else {
-      res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
+      return res.send(card);
     }
+    return res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для постановки лайка.' });
     }
-    res.status(SERVER_ERROR).send({ message: err.message });
+    return res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
 
@@ -70,14 +68,13 @@ exports.dislikeCard = async (req, res) => {
       { new: true },
     );
     if (card) {
-      res.send(card);
-    } else {
-      res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
+      return res.send(card);
     }
+    return res.status(NOT_FOUND).send({ message: 'Передан несуществующий _id карточки.' });
   } catch (err) {
     if (err.name === 'CastError') {
       return res.status(INCORRECT_DATA).send({ message: 'Переданы некорректные данные для снятии лайка.' });
     }
-    res.status(SERVER_ERROR).send({ message: err.message });
+    return res.status(SERVER_ERROR).send({ message: err.message });
   }
 };
