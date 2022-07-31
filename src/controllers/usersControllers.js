@@ -20,7 +20,10 @@ exports.getUserById = async (req, res) => {
       res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
     }
   } catch (err) {
-    res.status(SERVER_ERROR).send({ message: err.message });
+    if (err.name === 'CastError') {
+      return res.status(INCORRECT_DATA).send({ message: 'Передан некорректный _id пользователя.' });
+    }
+    res.status(SERVER_ERROR).send({ message: err.message, name: err.name });
   }
 };
 
@@ -47,6 +50,10 @@ exports.updateUser = async (req, res) => {
       { new: true },
     );
     if (user) {
+      const validation = user.validateSync();
+      if (validation !== undefined) {
+        return res.status(INCORRECT_DATA).send({ message: validation.message });
+      }
       res.send(user);
     } else {
       res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
