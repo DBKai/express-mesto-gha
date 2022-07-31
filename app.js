@@ -10,10 +10,6 @@ const app = express();
 
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-});
-
 app.use((req, res, next) => {
   req.user = {
     _id: '62e29f5276f0b7d7e14b9c72',
@@ -25,6 +21,14 @@ app.use('/', rootRouters);
 app.use('/users', userRouters);
 app.use('/cards', cardsRouters);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+async function main() {
+  await mongoose.connect('mongodb://localhost:27017/mestodb', {
+    useNewUrlParser: true,
+  });
+
+  await app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+main();
