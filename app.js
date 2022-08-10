@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const { userRouters } = require('./src/routes/usersRoutes');
 const { cardsRouters } = require('./src/routes/cardsRoutes');
 const { rootRouters } = require('./src/routes/rootRoutes');
+const { loginRouters } = require('./src/routes/loginRoutes');
+const { createUserRouters } = require('./src/routes/createUserRoutes');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -19,6 +21,8 @@ app.use((req, res, next) => {
 
 app.use('/users', userRouters);
 app.use('/cards', cardsRouters);
+app.use('/signin', loginRouters);
+app.use('/signup', createUserRouters);
 app.use('/', rootRouters);
 
 async function main() {
