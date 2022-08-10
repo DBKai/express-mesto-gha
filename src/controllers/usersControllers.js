@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { User } = require('../models/userModels');
 const { INCORRECT_DATA, NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
 
@@ -28,8 +29,13 @@ exports.getUserById = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
-    const { name, about, avatar } = req.body;
-    const user = await User.create({ name, about, avatar });
+    const {
+      name, about, avatar, email, password,
+    } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      name, about, avatar, email, password: hash,
+    });
 
     return res.send(user);
   } catch (err) {
