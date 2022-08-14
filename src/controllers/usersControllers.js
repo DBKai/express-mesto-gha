@@ -1,6 +1,18 @@
 const { User } = require('../models/userModels');
 const { INCORRECT_DATA, NOT_FOUND, SERVER_ERROR } = require('../utils/statusCode');
 
+exports.getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      return res.send(user);
+    }
+    return res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
+  } catch (err) {
+    return res.status(SERVER_ERROR).send({ message: err.message });
+  }
+};
+
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find({});

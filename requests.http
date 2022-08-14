@@ -42,6 +42,11 @@ Content-Type: application/json
 
 DELETE {{host}}/cards/{{cardId}}
 
+### Get current user
+
+GET {{host}}/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY5MWU4MGNjY2ViZmI1NzJjZTAwY2EiLCJpYXQiOjE2NjA0OTU2NzQsImV4cCI6MTY2MTEwMDQ3NH0.FnjtqiUxaUm0IYXoSOtqX2Y7WVcReDlvlkQ6Sa0cNwk
+
 ### Update user
 
 PATCH {{host}}/users/me
@@ -68,3 +73,23 @@ PUT {{host}}/cards/{{cardId}}/likes
 ### Remove like card
 
 DELETE {{host}}/cards/{{cardId}}/likes
+
+### Registration
+
+POST {{host}}/signup
+Content-Type: application/json
+
+{
+  "email": "user@mesto.ru",
+  "password": "test123user"
+}
+
+### Authorization
+
+POST {{host}}/signin
+Content-Type: application/json
+
+{
+  "email": "user@mesto.ru",
+  "password": "test123user"
+}
