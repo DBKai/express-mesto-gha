@@ -2,7 +2,7 @@
 @port = 3000
 @host = {{hostname}}:{{port}}
 @userId = 62e29f5276f0b7d7e14b9c72
-@cardId = 62e2bd68543ef2998910c374
+@cardId = 62f938d9edc6a7f6080c8982
 
 ### Get users
 
@@ -30,6 +30,7 @@ GET {{host}}/cards
 ### Create card
 
 POST {{host}}/cards/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY5MWU4MGNjY2ViZmI1NzJjZTAwY2EiLCJpYXQiOjE2NjA0OTU2NzQsImV4cCI6MTY2MTEwMDQ3NH0.FnjtqiUxaUm0IYXoSOtqX2Y7WVcReDlvlkQ6Sa0cNwk
 Content-Type: application/json
 
 {
@@ -41,6 +42,7 @@ Content-Type: application/json
 ### Delete card
 
 DELETE {{host}}/cards/{{cardId}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY5MWU4MGNjY2ViZmI1NzJjZTAwY2EiLCJpYXQiOjE2NjA0OTU2NzQsImV4cCI6MTY2MTEwMDQ3NH0.FnjtqiUxaUm0IYXoSOtqX2Y7WVcReDlvlkQ6Sa0cNwk
 
 ### Get current user
 
