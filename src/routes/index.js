@@ -7,7 +7,6 @@ const { cardRouters } = require('./cards');
 const { auth } = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
 const IncorrectDataError = require('../errors/incorrect-data-error');
-const UnauthorizedError = require('../errors/unauthorized-error');
 const DuplicateKeyError = require('../errors/duplicate-key-error');
 const { User } = require('../models/user');
 
