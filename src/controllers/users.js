@@ -1,7 +1,11 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { User } = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const IncorrectDataError = require('../errors/incorrect-data-error');
+const DuplicateKeyError = require('../errors/duplicate-key-error');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 exports.getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
@@ -16,7 +20,6 @@ exports.getCurrentUser = async (req, res, next) => {
 
 exports.getUsers = async (req, res, next) => {
   try {
-    console.log('query');
     const users = await User.find({});
 
     return res.send(users);
@@ -76,6 +79,45 @@ exports.updateAvatar = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new IncorrectDataError('Переданы некорректные данные при обновлении аватара.'));
     }
+    return next(err);
+  }
+};
+
+exports.createUser = async (req, res, next) => {
+  try {
+    const {
+      name, about, avatar, email, password,
+    } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      name, about, avatar, email, password: hash,
+    });
+
+    return res.send(user);
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      return next(new IncorrectDataError('Переданы некорректные данные при создании пользователя.'));
+    }
+    if (err.code === 11000) {
+      return next(new DuplicateKeyError(`Пользователь с email ${err.keyValue.email} уже существует`));
+    }
+    return next(err);
+  }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findUserByCredentials(email, password);
+
+    const token = jwt.sign(
+      { _id: user._id },
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+      { expiresIn: '7d' },
+    );
+    return res.cookie('jwt', token, { maxAge: 3600000, httpOnly: true }).send({ message: 'Успешная авторизация' }).end();
+  } catch (err) {
     return next(err);
   }
 };
