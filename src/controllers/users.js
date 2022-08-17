@@ -16,6 +16,7 @@ exports.getCurrentUser = async (req, res, next) => {
 
 exports.getUsers = async (req, res, next) => {
   try {
+    console.log('query');
     const users = await User.find({});
 
     return res.send(users);

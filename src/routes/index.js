@@ -13,7 +13,6 @@ const { User } = require('../models/user');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const indexRouters = express.Router();
-const app = express();
 
 const createUser = async (req, res, next) => {
   try {
@@ -54,8 +53,8 @@ const login = async (req, res, next) => {
   }
 };
 
-app.use('/users', auth, userRouters);
-app.use('/cards', auth, cardRouters);
+indexRouters.use('/users', auth, userRouters);
+indexRouters.use('/cards', auth, cardRouters);
 
 indexRouters.post('/signup', celebrate({
   body: Joi.object().keys({

@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
-const { indexRouters } = require('./src/routes/index');
+const { indexRouters } = require('./src/routes');
 
 const { PORT = 3000 } = process.env;
 const app = express();
