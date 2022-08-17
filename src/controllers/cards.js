@@ -1,5 +1,6 @@
 const NotFoundError = require('../errors/not-found-error');
 const IncorrectDataError = require('../errors/incorrect-data-error');
+const ForbiddenError = require('../errors/forbidden-error');
 const Card = require('../models/card');
 
 exports.getCards = async (req, res, next) => {
@@ -38,7 +39,7 @@ exports.deleteCard = async (req, res, next) => {
     const isOwner = card.owner.toString() === req.user._id;
 
     if (!isOwner) {
-      throw new IncorrectDataError('Нельзя удалить чужую карточку');
+      throw new ForbiddenError('Нельзя удалить чужую карточку');
     }
 
     await Card.deleteOne({ _id: req.params.cardId });
