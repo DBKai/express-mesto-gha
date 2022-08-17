@@ -93,7 +93,9 @@ exports.createUser = async (req, res, next) => {
       name, about, avatar, email, password: hash,
     });
 
-    return res.send(user);
+    return res.send({
+      name: user.name, about: user.about, avatar: user.avatar, email: user.email,
+    });
   } catch (err) {
     if (err.name === 'ValidationError') {
       return next(new IncorrectDataError('Переданы некорректные данные при создании пользователя.'));
