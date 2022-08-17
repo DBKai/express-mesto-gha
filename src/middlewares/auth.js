@@ -10,11 +10,14 @@ exports.auth = (req, res, next) => {
   }
 
   let payload;
+
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
     return next(err);
   }
+
   req.user = payload;
+
   return next();
 };

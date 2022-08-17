@@ -9,6 +9,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 exports.getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
+
     if (user) {
       return res.send(user);
     }
@@ -31,6 +32,7 @@ exports.getUsers = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId);
+
     if (user) {
       return res.send(user);
     }
@@ -39,6 +41,7 @@ exports.getUserById = async (req, res, next) => {
     if (err.name === 'CastError') {
       return next(new IncorrectDataError('Передан некорректный _id пользователя.'));
     }
+
     return next(err);
   }
 };
@@ -46,11 +49,13 @@ exports.getUserById = async (req, res, next) => {
 exports.updateUser = async (req, res, next) => {
   try {
     const { name, about } = req.body;
+
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
     );
+
     if (user) {
       return res.send(user);
     }
@@ -59,6 +64,7 @@ exports.updateUser = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new IncorrectDataError('Переданы некорректные данные при обновлении профиля.'));
     }
+
     return next(err);
   }
 };
@@ -79,6 +85,7 @@ exports.updateAvatar = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new IncorrectDataError('Переданы некорректные данные при обновлении аватара.'));
     }
+
     return next(err);
   }
 };
@@ -94,7 +101,10 @@ exports.createUser = async (req, res, next) => {
     });
 
     return res.send({
-      name: user.name, about: user.about, avatar: user.avatar, email: user.email,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
+      email: user.email,
     });
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -103,6 +113,7 @@ exports.createUser = async (req, res, next) => {
     if (err.code === 11000) {
       return next(new DuplicateKeyError(`Пользователь с email ${err.keyValue.email} уже существует`));
     }
+
     return next(err);
   }
 };
@@ -110,14 +121,13 @@ exports.createUser = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findUserByCredentials(email, password);
-
     const token = jwt.sign(
       { _id: user._id },
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
       { expiresIn: '7d' },
     );
+
     return res.cookie('jwt', token, { maxAge: 3600000, httpOnly: true }).send({ message: 'Успешная авторизация' }).end();
   } catch (err) {
     return next(err);

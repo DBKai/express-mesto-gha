@@ -27,7 +27,7 @@ indexRouters.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }).unknown(true),
 }), usersController.login);
-indexRouters.use('*', () => {
+indexRouters.use('*', auth, () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 

@@ -24,6 +24,7 @@ exports.createCard = async (req, res, next) => {
     if (err.name === 'ValidationError') {
       return next(new IncorrectDataError('Переданы некорректные данные при создании карточки.'));
     }
+
     return next(err);
   }
 };
@@ -35,13 +36,10 @@ exports.deleteCard = async (req, res, next) => {
     if (!card) {
       throw new NotFoundError('Карточка с указанным _id не найдена.');
     }
-
     const isOwner = card.owner.toString() === req.user._id;
-
     if (!isOwner) {
       throw new ForbiddenError('Нельзя удалить чужую карточку');
     }
-
     await Card.deleteOne({ _id: req.params.cardId });
 
     return res.send(card);
@@ -49,6 +47,7 @@ exports.deleteCard = async (req, res, next) => {
     if (err.name === 'CastError') {
       return next(new IncorrectDataError('Переданы некорректные данные для удаления карточки.'));
     }
+
     return next(err);
   }
 };
@@ -68,6 +67,7 @@ exports.likeCard = async (req, res, next) => {
     if (err.name === 'CastError') {
       return next(new IncorrectDataError('Переданы некорректные данные для постановки лайка.'));
     }
+
     return next(err);
   }
 };
@@ -87,6 +87,7 @@ exports.dislikeCard = async (req, res, next) => {
     if (err.name === 'CastError') {
       return next(new IncorrectDataError('Переданы некорректные данные для снятии лайка.'));
     }
+
     return next(err);
   }
 };
