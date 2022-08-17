@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+/* eslint no-useless-escape: 0 */
+const emailPattern = /^http(s)?:\/\/(www\.)?([\w\-]+)?(\.[\w]+)(\/)?([\/\w\-.+[\]()_~:\/%?#@!$&'*,;=]*)$/;
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,8 +14,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        /* eslint no-useless-escape: 0 */
-        return /^http(s)?:\/\/(www\.)?([\w\-]+)?(\.[\w]+)(\/)?([\/\w\-.+[\]()_~:\/%?#@!$&'*,;=]*)$/.test(v);
+        return emailPattern.test(v);
       },
       message: (props) => `${props.value} не соответствует правильному url`,
     },
@@ -25,6 +26,7 @@ const cardSchema = new mongoose.Schema({
   },
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
+    ref: 'user',
     default: [],
   },
   createdAt: {

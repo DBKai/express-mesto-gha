@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const { indexRouters } = require('./src/routes');
+const { errorsHandler } = require('./src/middlewares/errorsHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -14,14 +15,7 @@ app.use(cookieParser());
 app.use('/', indexRouters);
 
 app.use(errors());
-
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
-
-  next();
-});
+app.use(errorsHandler);
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/mestodb', {
